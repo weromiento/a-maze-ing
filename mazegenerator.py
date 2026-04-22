@@ -8,7 +8,7 @@ class Cell:
 
     Each cell stores its position (x, y) ans the state of its four walls
     (North, East, South, West), the state of a wall is represents
-    by a boolean (True = active, False inactive).
+    by a boolean (True = active, False inactive) and if is part of the pattern.
     """
 
     def __init__(self, x: int, y: int):
@@ -192,6 +192,13 @@ class Maze:
             print(f"Error: {e}")
 
     def display(self) -> None:
+        """
+        Display the maze in the terminal unsing ASCII characters.
+
+        Wall are drawn with block characters, and entry/exit are highlighted.
+        Cells belonging to the pattern ot the pattern are displayed with a
+        different colors.
+        """
         colors = {
             "wall": "\033[34m",
             "entry": "\033[32m",
