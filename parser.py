@@ -37,6 +37,8 @@ class Config(BaseModel):
         entry_x, entry_y = self.ENTRY
         if entry_x >= self.WIDTH or entry_y >= self.HEIGHT:
             raise ValueError("ENTRY must be inside the maze")
+        if self.ENTRY == self.EXIT:
+            raise ValueError("ENTRY and EXIT must be different")
         return self
 
 
@@ -65,10 +67,10 @@ def parse_file(filename: str) -> Config:
     Reads key=value pairs from the file, validates required fields,
     converts values to proper types, and builds the configuration.
     """
-    data = {}
+    data: dict[str, str] = {}
     required = {"WIDTH", "HEIGHT", "ENTRY", "EXIT", "OUTPUT_FILE", "PERFECT"}
     try:
-        with open(filename) as f:
+        with open(filename, "r") as f:
             for line in f:
                 line = line.strip()
                 if not line or line.startswith("#"):
@@ -80,9 +82,11 @@ def parse_file(filename: str) -> Config:
     missing = required - data.keys()
     if missing:
         raise SystemExit(f"Missing keys {missing} in {filename}")
-    data["WIDTH"] = int(data["WIDTH"])
-    data["HEIGHT"] = int(data["HEIGHT"])
-    data["ENTRY"] = parse_tuple(data["ENTRY"])
-    data["EXIT"] = parse_tuple(data["EXIT"])
-    data["PERFECT"] = parse_bool(data["PERFECT"])
-    return Config(**data)
+    return Config(
+        WIDTH=int(data["WIDTH"]),
+        HEIGHT=int(data["HEIGHT"]),
+        ENTRY=parse_tuple(data["ENTRY"]),
+        EXIT=parse_tuple(data["EXIT"]),
+        OUTPUT_FILE=data["OUTPUT_FILE"],
+        PERFECT=parse_bool(data["PERFECT"]),
+    )

@@ -26,9 +26,11 @@ class Maze:
     This class handles maze creation, cell management and wall manipulation.
     """
 
-    def __init__(self, width: int, height: int):
+    def __init__(self, width: int, height: int, entry: tuple, exit: tuple):
         self.width = width
         self.height = height
+        self.entry = entry
+        self.exit = exit
 
         self.grid = [[Cell(x, y) for x in range(width)] for y in range(height)]
 
@@ -87,7 +89,7 @@ class Maze:
         through unvisited neighbors using a stack-based backtracking approach.
         Cells already marked as visited are left untouched.
         """
-        start_cell = self.get_cell(0, 0)  # a terme mettre ENTRY
+        start_cell = self.get_cell(self.entry[0], self.entry[1])
         stack = [start_cell]
         start_cell.visited = True
         while stack:
@@ -104,6 +106,8 @@ class Maze:
 
     def generate_42(self) -> None:
         """Generate the 42 pattern in the maze"""
+        if self.height < 6 or self.width < 9:
+            raise ValueError("The maze is to small to generate the pattern 42")
         start_x = self.width // 2 - 3
         start_y = self.height // 2 - 2
         draw = [
@@ -118,6 +122,8 @@ class Maze:
                 if case != 1:
                     continue
                 c = self.get_cell(start_x + x, start_y + y)
+                if self.entry == (c.x, c.y) or self.exit == (c.x, c.y):
+                    raise ValueError("Entry or Exit is in the 42 pattern")
                 c.walls["N"] = True
                 c.walls["E"] = True
                 c.walls["S"] = True
@@ -139,3 +145,51 @@ class Maze:
                             n.walls["N"] = True
                         elif direction == "W":
                             n.walls["E"] = True
+
+    def cell_to_hex(self, cell: Cell) -> str:
+        """
+        generate an hexadecimal value
+        compared with the state of each wall
+        """
+        value = 0
+        if cell.walls["N"]:
+            value += 1
+        if cell.walls["E"]:
+            value += 2
+        if cell.walls["S"]:
+            value += 4
+        if cell.walls["W"]:
+            value += 8
+        return f"{value:X}"
+
+    def write_maze_file(self, filename: str, path: str) -> None:
+        """
+        Write the output file which contains the maze in hexadecimal
+        and the coordinates of the entry and exit,
+        and also the path from the entry to the exit.
+        """
+        try:
+            with open(filename, "w") as f:
+                for y in range(self.height):
+                    line = []
+                    for x in range(self.width):
+                        cell = self.get_cell(x, y)
+                        line.append(self.cell_to_hex(cell))
+                    f.write("".join(line) + "\n")
+                f.write("\n")
+                f.write(f"{self.entry[0]},{self.entry[1]}\n")
+                f.write(f"{self.exit[0]},{self.exit[1]}\n")
+                f.write(path + "\n")
+        except (
+            PermissionError,
+            FileNotFoundError,
+            IsADirectoryError,
+            OSError,
+        ) as e:
+            print(f"Error: {e}")
+
+
+maze = Maze(9, 6, (0, 0), (19, 14))
+maze.generate_42()
+maze.generate_maze()
+maze.write_maze_file("maze.txt", "pas de path encore")
