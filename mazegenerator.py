@@ -17,6 +17,7 @@ class Cell:
 
         self.walls = {"N": True, "E": True, "S": True, "W": True}
         self.visited = False
+        self.part_of_path = False
         self.pattern = False
 
 
@@ -205,6 +206,7 @@ class Maze:
             "exit": "\033[31m",
             "empty": "\033[0m",
             "pattern": "\033[36m",
+            "path": "\033[33m",
         }
         RESET = "\033[0m"
         WALL = "██"
@@ -229,6 +231,8 @@ class Maze:
                     print(colors["exit"] + WALL + RESET, end="")
                 elif self.get_cell(x, y).pattern:
                     print(colors["pattern"] + WALL + RESET, end="")
+                elif self.get_cell(x, y).part_of_path:
+                    print(colors["path"] + WALL + RESET, end="")
                 else:
                     print(EMPTY, end="")
             if self.get_cell(self.width - 1, y).walls["E"]:
@@ -244,9 +248,61 @@ class Maze:
                     print(EMPTY, end="")
             print(colors["wall"] + WALL + RESET)
 
+    def bfs(self) -> None:
+        start_cell = self.get_cell(self.entry[0], self.entry[1])
+        exit_cell = self.get_cell(self.exit[0], self.exit[1])
+        queue = []
+        queue.append(start_cell)
+        parent = {}
+        parent[start_cell] = None
+        visited = set()
+        visited.add((start_cell.x, start_cell.y))
+        while queue:
+            current = queue.pop(0)
+            if current == exit_cell:
+                break
 
-maze = Maze(20, 20, (0, 0), (19, 14))
+            if not current.walls["N"]:
+                neighbor = self.get_cell(current.x, current.y - 1)
+                if (neighbor.x, neighbor.y) not in visited:
+                    visited.add((neighbor.x, neighbor.y))
+                    parent[neighbor] = current
+                    queue.append(neighbor)
+
+            if not current.walls["E"]:
+                neighbor = self.get_cell(current.x + 1, current.y)
+                if (neighbor.x, neighbor.y) not in visited:
+                    visited.add((neighbor.x, neighbor.y))
+                    parent[neighbor] = current
+                    queue.append(neighbor)
+
+            if not current.walls["S"]:
+                neighbor = self.get_cell(current.x, current.y + 1)
+                if (neighbor.x, neighbor.y) not in visited:
+                    visited.add((neighbor.x, neighbor.y))
+                    parent[neighbor] = current
+                    queue.append(neighbor)
+
+            if not current.walls["W"]:
+                neighbor = self.get_cell(current.x - 1, current.y)
+                if (neighbor.x, neighbor.y) not in visited:
+                    visited.add((neighbor.x, neighbor.y))
+                    parent[neighbor] = current
+                    queue.append(neighbor)
+        path = []
+        current = exit_cell
+        while current is not None:
+            path.append(current)
+            current = parent.get(current)
+        path.reverse()
+        for cell in path:
+            cell.part_of_path = True
+        print(len(path))
+
+
+maze = Maze(10, 10, (0, 0), (9, 9))
 maze.generate_42()
 maze.generate_maze()
+maze.bfs()
 maze.display()
 # maze.write_maze_file("maze.txt", "pas de path encore")
