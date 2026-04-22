@@ -17,6 +17,7 @@ class Cell:
 
         self.walls = {"N": True, "E": True, "S": True, "W": True}
         self.visited = False
+        self.pattern = False
 
 
 class Maze:
@@ -95,7 +96,9 @@ class Maze:
         while stack:
             current = stack[-1]
             neighbors = self.get_neighbors(current)
-            unvisited = [n for n in neighbors if not n.visited]
+            unvisited = [
+                n for n in neighbors if not n.visited and not n.pattern
+            ]
             if unvisited:
                 next_cell = random.choice(unvisited)
                 self.remove_wall(current, next_cell)
@@ -128,7 +131,7 @@ class Maze:
                 c.walls["E"] = True
                 c.walls["S"] = True
                 c.walls["W"] = True
-                c.visited = True
+                c.pattern = True
                 for nx, ny, direction in [
                     (c.x, c.y - 1, "N"),
                     (c.x + 1, c.y, "E"),
@@ -188,8 +191,55 @@ class Maze:
         ) as e:
             print(f"Error: {e}")
 
+    def display(self) -> None:
+        colors = {
+            "wall": "\033[34m",
+            "entry": "\033[32m",
+            "exit": "\033[31m",
+            "empty": "\033[0m",
+            "pattern": "\033[36m",
+        }
+        RESET = "\033[0m"
+        WALL = "██"
+        EMPTY = "  "
+        for x in range(self.width):
+            print(colors["wall"] + WALL + RESET, end="")
+            if self.get_cell(x, 0).walls["N"]:
+                print(colors["wall"] + WALL + RESET, end="")
+            else:
+                print(EMPTY, end="")
+        print(colors["wall"] + WALL + RESET)
+        for y in range(self.height):
+            for x in range(self.width):
+                cell = self.get_cell(x, y)
+                if cell.walls["W"]:
+                    print(colors["wall"] + WALL + RESET, end="")
+                else:
+                    print(EMPTY, end="")
+                if (x, y) == self.entry:
+                    print(colors["entry"] + WALL + RESET, end="")
+                elif (x, y) == self.exit:
+                    print(colors["exit"] + WALL + RESET, end="")
+                elif self.get_cell(x, y).pattern:
+                    print(colors["pattern"] + WALL + RESET, end="")
+                else:
+                    print(EMPTY, end="")
+            if self.get_cell(self.width - 1, y).walls["E"]:
+                print(colors["wall"] + WALL + RESET)
+            else:
+                print(EMPTY)
+            for x in range(self.width):
+                cell = self.get_cell(x, y)
+                print(colors["wall"] + WALL + RESET, end="")
+                if cell.walls["S"]:
+                    print(colors["wall"] + WALL + RESET, end="")
+                else:
+                    print(EMPTY, end="")
+            print(colors["wall"] + WALL + RESET)
 
-maze = Maze(9, 6, (0, 0), (19, 14))
+
+maze = Maze(20, 20, (0, 0), (19, 14))
 maze.generate_42()
 maze.generate_maze()
-maze.write_maze_file("maze.txt", "pas de path encore")
+maze.display()
+# maze.write_maze_file("maze.txt", "pas de path encore")
