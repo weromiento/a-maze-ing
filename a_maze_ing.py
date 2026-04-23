@@ -4,10 +4,21 @@ import sys
 
 
 def clear() -> None:
+    """
+    clear the terminal with uses ANSI espace sequences:
+    \\33[H moves the cursor to the home position (top left)
+    \\33[J clears akk content from the cursor to the end of the screen
+    """
     print("\033[H\033[J", end="")
 
 
 def main() -> None:
+    """
+    Entry point of the program
+    Loads configuration, generate a maze with a 42 pattern calculate the
+    solution path, then runs an interactive loop allowing regeneration,
+    path toggle, change colors, switch perfect mode and exit
+    """
     if len(sys.argv) < 2:
         print("Usage: python a_maze_ing.py <config_file>")
         return
@@ -32,7 +43,7 @@ def main() -> None:
         else:
             print("4. Switch perfect to True")
         print("5. Quit")
-        key = input("Choice? (1-4): ").strip()
+        key = input("Choice? (1-5): ").strip()
         if key == "1":
             maze.reset_maze()
             maze.generate_maze(perfect)
@@ -47,7 +58,7 @@ def main() -> None:
         elif key == "5":
             return
         else:
-            print("Key must be between 1 and 4")
+            print("Key must be between 1 and 5")
 
 
 if __name__ == "__main__":

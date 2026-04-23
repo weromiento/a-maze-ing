@@ -91,11 +91,12 @@ class Maze:
         return neighbors
 
     def generate_maze(self, perfect: bool) -> None:
-        """Generate a perfect maze using iterative depth-first search (DFS).
+        """Generate a maze using iterative depth-first search (DFS).
 
         Starts from cell with the coordinates of ENTRY and carves passages
         through unvisited neighbors using a stack-based backtracking approach.
         Cells already marked as visited are left untouched.
+        If perfect is false I add hole to the maze to create multiple path.
         """
         start_cell = self.get_cell(self.entry[0], self.entry[1])
         stack = [start_cell]
@@ -282,6 +283,14 @@ class Maze:
             print(colors["wall"] + WALL + RESET)
 
     def bfs(self) -> str:
+        """
+        Finds the shortest path in the maze using Breadth-First Search (BFS).
+
+        Explores reachable cells from the entry to the exit by traversing
+        passages (no walls). Reconstructs the path using a parent map,
+        marks it inside the maze, and returns a string of directions
+        (N, E, S, W) representing the solution path.
+        """
         start_cell = self.get_cell(self.entry[0], self.entry[1])
         exit_cell = self.get_cell(self.exit[0], self.exit[1])
         queue = []
@@ -350,6 +359,10 @@ class Maze:
         return directions
 
     def reset_maze(self) -> None:
+        """
+        Reset the maze by putting back all walls, the visited state to false,
+        and the part_of_path state to false.
+        """
         for y in range(self.height):
             for x in range(self.width):
                 cell = self.get_cell(x, y)
