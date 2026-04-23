@@ -48,6 +48,8 @@ def main() -> None:
         print("Usage: python a_maze_ing.py <config_file>")
         return
     colors = random_colors()
+    seed = random.randint(0, 10_000_000)
+    random.seed(seed)
     config = parse_file(sys.argv[1])
     perfect = config.PERFECT
     maze = Maze(config.WIDTH, config.HEIGHT, config.ENTRY, config.EXIT)
@@ -70,6 +72,8 @@ def main() -> None:
         print("5. Quit")
         key = input("Choice? (1-5): ").strip()
         if key == "1":
+            seed = random.randint(0, 10_000_000)
+            random.seed(seed)
             maze.reset_maze()
             maze.generate_maze(perfect)
             path_str = maze.bfs()

@@ -125,22 +125,22 @@ class Maze:
                     if y > 0:
                         neighbor = self.get_cell(x, y - 1)
                         if not neighbor.pattern and cell.walls["N"]:
-                            if random.random() < 0.10:
+                            if random.random() < 0.05:
                                 self.remove_wall(cell, neighbor)
                     if x < self.width - 1:
                         neighbor = self.get_cell(x + 1, y)
                         if not neighbor.pattern and cell.walls["E"]:
-                            if random.random() < 0.10:
+                            if random.random() < 0.05:
                                 self.remove_wall(cell, neighbor)
                     if y < self.height - 1:
                         neighbor = self.get_cell(x, y + 1)
                         if not neighbor.pattern and cell.walls["S"]:
-                            if random.random() < 0.10:
+                            if random.random() < 0.05:
                                 self.remove_wall(cell, neighbor)
                     if x > 0:
                         neighbor = self.get_cell(x - 1, y)
                         if not neighbor.pattern and cell.walls["W"]:
-                            if random.random() < 0.10:
+                            if random.random() < 0.05:
                                 self.remove_wall(cell, neighbor)
 
     def generate_42(self) -> None:
@@ -344,7 +344,7 @@ class Maze:
         for cell in path:
             cell.part_of_path = True
         directions = ""
-        for i in range(len(path) - 2):
+        for i in range(len(path) - 1):
             current = path[i]
             next_cell = path[i + 1]
             dx = next_cell.x - current.x
