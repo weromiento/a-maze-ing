@@ -12,9 +12,10 @@ def main() -> None:
         print("Usage: python a_maze_ing.py <config_file>")
         return
     config = parse_file(sys.argv[1])
+    perfect = config.PERFECT
     maze = Maze(config.WIDTH, config.HEIGHT, config.ENTRY, config.EXIT)
     maze.generate_42()
-    maze.generate_maze()
+    maze.generate_maze(perfect)
     path_str = maze.bfs()
     maze.write_maze_file(config.OUTPUT_FILE, path_str)
     path = True
@@ -26,11 +27,15 @@ def main() -> None:
         print("1. Re-generate a new maze")
         print("2. Show/Hide path from entry to exit")
         print("3. Rotate maze colors")
-        print("4. Quit")
+        if perfect:
+            print("4. Switch perfect to False")
+        else:
+            print("4. Switch perfect to True")
+        print("5. Quit")
         key = input("Choice? (1-4): ").strip()
         if key == "1":
             maze.reset_maze()
-            maze.generate_maze()
+            maze.generate_maze(perfect)
             path_str = maze.bfs()
             maze.write_maze_file(config.OUTPUT_FILE, path_str)
         elif key == "2":
@@ -38,6 +43,8 @@ def main() -> None:
         elif key == "3":
             pass
         elif key == "4":
+            perfect = not perfect
+        elif key == "5":
             return
         else:
             print("Key must be between 1 and 4")
@@ -46,5 +53,5 @@ def main() -> None:
 if __name__ == "__main__":
     try:
         main()
-    except Exception as e:
+    except PermissionError as e:
         print("Error: ", e)
