@@ -239,10 +239,10 @@ class Maze:
         WALL = "██"
         EMPTY = "  "
         cols = os.get_terminal_size().columns
-        if self.width > (cols // 4):
+        if self.width > (cols // 4) - 2:
             print(
                 "WIDTH is too large compared to the "
-                f"size of the terminal (max {(cols // 4)})."
+                f"size of the terminal (max {(cols // 4) - 2})."
                 " You can zoom out and regenerate the maze\n"
             )
             return
