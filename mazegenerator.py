@@ -1,5 +1,6 @@
 from typing import List
 import random
+import os
 
 
 class Cell:
@@ -226,7 +227,7 @@ class Maze:
         ) as e:
             print(f"Error: {e}")
 
-    def display(self, path: bool) -> None:
+    def display(self, path: bool, colors: dict[str, str]) -> None:
         """
         Display the maze in the terminal unsing ASCII characters.
 
@@ -234,17 +235,17 @@ class Maze:
         Cells belonging to the pattern ot the pattern are displayed with a
         different colors.
         """
-        colors = {
-            "wall": "\033[34m",
-            "entry": "\033[32m",
-            "exit": "\033[31m",
-            "empty": "\033[0m",
-            "pattern": "\033[36m",
-            "path": "\033[33m",
-        }
         RESET = "\033[0m"
         WALL = "██"
         EMPTY = "  "
+        cols = os.get_terminal_size().columns
+        if self.width > (cols // 4):
+            print(
+                "WIDTH is too large compared to the "
+                f"size of the terminal (max {(cols // 4)})."
+                " You can zoom out and regenerate the maze\n"
+            )
+            return
         for x in range(self.width):
             print(colors["wall"] + WALL + RESET, end="")
             if self.get_cell(x, 0).walls["N"]:
