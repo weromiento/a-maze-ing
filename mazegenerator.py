@@ -28,7 +28,13 @@ class Maze:
     This class handles maze creation, cell management and wall manipulation.
     """
 
-    def __init__(self, width: int, height: int, entry: tuple, exit: tuple):
+    def __init__(
+        self,
+        width: int,
+        height: int,
+        entry: tuple[int, int],
+        exit: tuple[int, int],
+    ):
         self.width = width
         self.height = height
         self.entry = entry
@@ -65,7 +71,7 @@ class Maze:
             c1.walls["N"] = False
             c2.walls["S"] = False
 
-    def get_neighbors(self, cell: Cell) -> List:
+    def get_neighbors(self, cell: Cell) -> List[Cell]:
         """Return neighbors of a cell."""
         directions = [
             ("N", 0, -1),
@@ -192,7 +198,7 @@ class Maze:
         ) as e:
             print(f"Error: {e}")
 
-    def display(self) -> None:
+    def display(self, path: bool) -> None:
         """
         Display the maze in the terminal unsing ASCII characters.
 
@@ -231,7 +237,7 @@ class Maze:
                     print(colors["exit"] + WALL + RESET, end="")
                 elif self.get_cell(x, y).pattern:
                     print(colors["pattern"] + WALL + RESET, end="")
-                elif self.get_cell(x, y).part_of_path:
+                elif self.get_cell(x, y).part_of_path and path:
                     print(colors["path"] + WALL + RESET, end="")
                 else:
                     print(EMPTY, end="")
@@ -248,12 +254,12 @@ class Maze:
                     print(EMPTY, end="")
             print(colors["wall"] + WALL + RESET)
 
-    def bfs(self) -> None:
+    def bfs(self) -> str:
         start_cell = self.get_cell(self.entry[0], self.entry[1])
         exit_cell = self.get_cell(self.exit[0], self.exit[1])
         queue = []
         queue.append(start_cell)
-        parent = {}
+        parent: dict[Cell, Cell | None] = {}
         parent[start_cell] = None
         visited = set()
         visited.add((start_cell.x, start_cell.y))
@@ -291,18 +297,36 @@ class Maze:
                     queue.append(neighbor)
         path = []
         current = exit_cell
-        while current is not None:
+        while current in parent:
             path.append(current)
-            current = parent.get(current)
+            next_cell = parent[current]
+            if next_cell is None:
+                break
+            current = next_cell
         path.reverse()
         for cell in path:
             cell.part_of_path = True
-        print(len(path))
+        directions = ""
+        for i in range(len(path) - 2):
+            current = path[i]
+            next_cell = path[i + 1]
+            dx = next_cell.x - current.x
+            dy = next_cell.y - current.y
+            if dx == 1:
+                directions += "E"
+            elif dx == -1:
+                directions += "W"
+            elif dy == 1:
+                directions += "S"
+            elif dy == -1:
+                directions += "N"
+        return directions
 
-
-maze = Maze(10, 10, (0, 0), (9, 9))
-maze.generate_42()
-maze.generate_maze()
-maze.bfs()
-maze.display()
-# maze.write_maze_file("maze.txt", "pas de path encore")
+    def reset_maze(self) -> None:
+        for y in range(self.height):
+            for x in range(self.width):
+                cell = self.get_cell(x, y)
+                if not cell.pattern:
+                    cell.walls = {"N": True, "E": True, "S": True, "W": True}
+                    cell.visited = False
+                    cell.part_of_path = False
