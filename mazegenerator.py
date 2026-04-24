@@ -4,8 +4,7 @@ import os
 
 
 class Cell:
-    """
-    Represents a single cell in the maze grid.
+    """Represents a single cell in the maze grid.
 
     Each cell stores its position (x, y) ans the state of its four walls
     (North, East, South, West), the state of a wall is represents
@@ -23,8 +22,7 @@ class Cell:
 
 
 class Maze:
-    """
-    Represents a maze grid composed of cells.
+    """Represents a maze grid composed of cells.
 
     This class handles maze creation, cell management and wall manipulation.
     """
@@ -44,21 +42,15 @@ class Maze:
         self.grid = [[Cell(x, y) for x in range(width)] for y in range(height)]
 
     def get_cell(self, x: int, y: int) -> Cell:
-        """
-        Returns the cell located at coordinates (x, y).
-        """
+        """Returns the cell located at coordinates (x, y)."""
         return self.grid[y][x]
 
     def in_bounds(self, x: int, y: int) -> bool:
-        """
-        Return a bool to know if the cell is in bounds.
-        """
+        """Return a bool to know if the cell is in bounds."""
         return 0 <= x < self.width and 0 <= y < self.height
 
     def remove_wall(self, c1: Cell, c2: Cell) -> None:
-        """
-        Removes the Wall between two adjacent cells.
-        """
+        """Removes the Wall between two adjacent cells."""
         dx = c2.x - c1.x
         dy = c2.y - c1.y
 
@@ -79,9 +71,7 @@ class Maze:
             c2.walls["S"] = False
 
     def get_neighbors(self, cell: Cell) -> List[Cell]:
-        """
-        Return neighbors of a cell.
-        """
+        """Return neighbors of a cell."""
         directions = [
             ("N", 0, -1),
             ("E", 1, 0),
@@ -100,8 +90,7 @@ class Maze:
         return neighbors
 
     def generate_maze(self, perfect: bool) -> None:
-        """
-        Generate a maze using iterative depth-first search (DFS).
+        """Generate a maze using iterative depth-first search (DFS).
 
         Starts from cell with the coordinates of ENTRY and carves passages
         through unvisited neighbors using a stack-based backtracking approach.
@@ -153,9 +142,7 @@ class Maze:
                                 self.remove_wall(cell, neighbor)
 
     def generate_42(self) -> None:
-        """
-        Generate the 42 pattern in the maze
-        """
+        """Generate the 42 pattern in the maze"""
         if self.height < 6 or self.width < 9:
             raise ValueError("The maze is to small to generate the pattern 42")
         start_x = self.width // 2 - 3
@@ -198,7 +185,7 @@ class Maze:
 
     def cell_to_hex(self, cell: Cell) -> str:
         """
-        generate an hexadecimal value
+        Generate an hexadecimal value
         compared with the state of each wall
         """
         value = 0
@@ -239,8 +226,7 @@ class Maze:
             print(f"Error: {e}")
 
     def display(self, path: bool, colors: dict[str, str]) -> None:
-        """
-        Display the maze in the terminal unsing ASCII characters.
+        """Display the maze in the terminal unsing ASCII characters.
 
         Wall are drawn with block characters, and entry/exit are highlighted.
         Cells belonging to the pattern ot the pattern are displayed with a
@@ -295,8 +281,7 @@ class Maze:
             print(colors["wall"] + WALL + RESET)
 
     def bfs(self) -> str:
-        """
-        Finds the shortest path in the maze using Breadth-First Search (BFS).
+        """Finds the shortest path in the maze using Breadth-First Search (BFS)
 
         Explores reachable cells from the entry to the exit by traversing
         passages (no walls). Reconstructs the path using a parent map,

@@ -4,8 +4,7 @@ from pydantic import BaseModel, model_validator
 
 
 class Config(BaseModel):
-    """
-    Condiguration model for maze generation.
+    """Condiguration model for maze generation.
 
     This class defines all parameters required to generate a maze,
     including its dimensions, entry/exit points, output file name,
@@ -21,8 +20,7 @@ class Config(BaseModel):
 
     @model_validator(mode="after")
     def check_data(self) -> Self:
-        """
-        Validates the configuration values after model initialization.
+        """Validates the configuration values after model initialization.
 
         Ensures that:
         - WIDTH and HEIGHT are strictly positive
@@ -44,9 +42,7 @@ class Config(BaseModel):
 
 
 def parse_tuple(value: str) -> tuple[int, int]:
-    """
-    Parses a string formatted as 'x,y' into a tuple of integers.
-    """
+    """Parses a string formatted as 'x,y' into a tuple of integers."""
     parts = value.split(",")
     if len(parts) != 2:
         raise ValueError(f"Invalid tuple: {value}")
@@ -54,9 +50,7 @@ def parse_tuple(value: str) -> tuple[int, int]:
 
 
 def parse_bool(value: str) -> bool:
-    """
-    Converts a string into a boolean value.
-    """
+    """Converts a string into a boolean value."""
     v = value.strip().lower()
     if v == "true":
         return True
@@ -66,8 +60,7 @@ def parse_bool(value: str) -> bool:
 
 
 def parse_file(filename: str) -> Config:
-    """
-    Parses a configuration file and returns a Config object.
+    """Parses a configuration file and returns a Config object.
 
     Reads key=value pairs from the file, validates required fields,
     converts values to proper types, and builds the configuration.
