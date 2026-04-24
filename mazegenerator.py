@@ -44,15 +44,21 @@ class Maze:
         self.grid = [[Cell(x, y) for x in range(width)] for y in range(height)]
 
     def get_cell(self, x: int, y: int) -> Cell:
-        """Returns the cell located at coordinates (x, y)."""
+        """
+        Returns the cell located at coordinates (x, y).
+        """
         return self.grid[y][x]
 
     def in_bounds(self, x: int, y: int) -> bool:
-        """Return a bool to know if the cell is in bounds."""
+        """
+        Return a bool to know if the cell is in bounds.
+        """
         return 0 <= x < self.width and 0 <= y < self.height
 
     def remove_wall(self, c1: Cell, c2: Cell) -> None:
-        """Removes the Wall between two adjacent cells."""
+        """
+        Removes the Wall between two adjacent cells.
+        """
         dx = c2.x - c1.x
         dy = c2.y - c1.y
 
@@ -73,7 +79,9 @@ class Maze:
             c2.walls["S"] = False
 
     def get_neighbors(self, cell: Cell) -> List[Cell]:
-        """Return neighbors of a cell."""
+        """
+        Return neighbors of a cell.
+        """
         directions = [
             ("N", 0, -1),
             ("E", 1, 0),
@@ -92,7 +100,8 @@ class Maze:
         return neighbors
 
     def generate_maze(self, perfect: bool) -> None:
-        """Generate a maze using iterative depth-first search (DFS).
+        """
+        Generate a maze using iterative depth-first search (DFS).
 
         Starts from cell with the coordinates of ENTRY and carves passages
         through unvisited neighbors using a stack-based backtracking approach.
@@ -144,7 +153,9 @@ class Maze:
                                 self.remove_wall(cell, neighbor)
 
     def generate_42(self) -> None:
-        """Generate the 42 pattern in the maze"""
+        """
+        Generate the 42 pattern in the maze
+        """
         if self.height < 6 or self.width < 9:
             raise ValueError("The maze is to small to generate the pattern 42")
         start_x = self.width // 2 - 3

@@ -1,4 +1,5 @@
-from typing import Self
+# from typing import Self
+from typing_extensions import Self
 from pydantic import BaseModel, model_validator
 
 
@@ -43,7 +44,9 @@ class Config(BaseModel):
 
 
 def parse_tuple(value: str) -> tuple[int, int]:
-    """Parses a string formatted as 'x,y' into a tuple of integers."""
+    """
+    Parses a string formatted as 'x,y' into a tuple of integers.
+    """
     parts = value.split(",")
     if len(parts) != 2:
         raise ValueError(f"Invalid tuple: {value}")
@@ -51,7 +54,9 @@ def parse_tuple(value: str) -> tuple[int, int]:
 
 
 def parse_bool(value: str) -> bool:
-    """Converts a string into a boolean value."""
+    """
+    Converts a string into a boolean value.
+    """
     v = value.strip().lower()
     if v == "true":
         return True
