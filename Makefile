@@ -2,7 +2,6 @@ PYTHON = python3
 PIP = pip
 MAIN = a_maze_ing.py
 ARG = config.txt
-PYCACHE = __pycache__
 
 all: install
 
@@ -16,7 +15,7 @@ debug:
 	$(PYTHON) -m pdb $(MAIN) $(ARG)
 
 clean:
-	rm -rf $(PYCACHE)
+	rm -rf __pycache__ .mypy_cache mazegen.egg-info
 lint:
 	flake8 .
 	mypy . --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs
@@ -24,3 +23,6 @@ lint:
 lint-strict:
 	flake8 .
 	mypy . --strict
+
+build:
+	python -m build
