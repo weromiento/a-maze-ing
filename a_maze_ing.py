@@ -53,10 +53,7 @@ def main() -> None:
     config = parse_file(sys.argv[1])
     perfect = config.PERFECT
     maze = Maze(config.WIDTH, config.HEIGHT, config.ENTRY, config.EXIT)
-    maze.generate_42()
-    maze.generate_maze(perfect)
-    path_str = maze.bfs()
-    maze.write_maze_file(config.OUTPUT_FILE, path_str)
+    maze.generate_maze(perfect, config.OUTPUT_FILE)
     path = True
     while True:
         clear()
@@ -75,9 +72,7 @@ def main() -> None:
             seed = random.randint(0, 10_000_000)
             random.seed(seed)
             maze.reset_maze()
-            maze.generate_maze(perfect)
-            path_str = maze.bfs()
-            maze.write_maze_file(config.OUTPUT_FILE, path_str)
+            maze.generate_maze(perfect, config.OUTPUT_FILE)
         elif key == "2":
             path = not path
         elif key == "3":

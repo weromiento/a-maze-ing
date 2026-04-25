@@ -89,7 +89,7 @@ class Maze:
 
         return neighbors
 
-    def generate_maze(self, perfect: bool) -> None:
+    def generate_maze(self, perfect: bool, output_file: str) -> None:
         """Generate a maze using iterative depth-first search (DFS).
 
         Starts from cell with the coordinates of ENTRY and carves passages
@@ -97,6 +97,7 @@ class Maze:
         Cells already marked as visited are left untouched.
         If perfect is false I add hole to the maze to create multiple path.
         """
+        self.generate_42()
         start_cell = self.get_cell(self.entry[0], self.entry[1])
         stack = [start_cell]
         start_cell.visited = True
@@ -140,6 +141,8 @@ class Maze:
                         if not neighbor.pattern and cell.walls["W"]:
                             if random.random() < 0.05:
                                 self.remove_wall(cell, neighbor)
+        path = self.bfs()
+        self.write_maze_file(output_file, path)
 
     def generate_42(self) -> None:
         """Generate the 42 pattern in the maze"""
