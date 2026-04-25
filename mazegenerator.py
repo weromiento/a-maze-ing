@@ -259,7 +259,18 @@ class Maze:
                 if cell.walls["W"]:
                     print(colors["wall"] + WALL + RESET, end="")
                 else:
-                    print(EMPTY, end="")
+                    if x > 0:
+                        neighbor = self.get_cell(x - 1, y)
+                        if (
+                            cell.part_of_path
+                            and neighbor.part_of_path
+                            and path
+                        ):
+                            print(colors["path"] + WALL + RESET, end="")
+                        else:
+                            print(EMPTY, end="")
+                    else:
+                        print(EMPTY, end="")
                 if (x, y) == self.entry:
                     print(colors["entry"] + WALL + RESET, end="")
                 elif (x, y) == self.exit:
@@ -280,7 +291,18 @@ class Maze:
                 if cell.walls["S"]:
                     print(colors["wall"] + WALL + RESET, end="")
                 else:
-                    print(EMPTY, end="")
+                    if y < self.height:
+                        neighbor = self.get_cell(x, y + 1)
+                        if (
+                            cell.part_of_path
+                            and neighbor.part_of_path
+                            and path
+                        ):
+                            print(colors["path"] + WALL + RESET, end="")
+                        else:
+                            print(EMPTY, end="")
+                    else:
+                        print(EMPTY, end="")
             print(colors["wall"] + WALL + RESET)
 
     def bfs(self) -> str:
