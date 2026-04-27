@@ -156,6 +156,7 @@ class Maze:
                         if not neighbor.pattern and cell.walls["W"]:
                             if random.random() < 0.05:
                                 self.remove_wall(cell, neighbor)
+        self.check_and_fix_open_areas()
         path = self.bfs()
         self.write_maze_file(output_file, path)
         return pattern_ok
@@ -412,3 +413,43 @@ class Maze:
                     cell.walls = {"N": True, "E": True, "S": True, "W": True}
                     cell.visited = False
                     cell.part_of_path = False
+
+    def check_and_fix_open_areas(self) -> None:
+        """Check and correct open areas of 3x3 or larger."""
+        for y in range(self.height - 2):
+            for x in range(self.width - 2):
+                is_open = True
+                for dy in range(3):
+                    for dx in range(3):
+                        cell = self.get_cell(x + dx, y + dy)
+                        if cell.pattern:
+                            is_open = False
+                            break
+                        if dx < 2 and cell.walls["E"]:
+                            is_open = False
+                            break
+                        if dy < 2 and cell.walls["S"]:
+                            is_open = False
+                            break
+                    if not is_open:
+                        break
+                if not is_open:
+                    continue
+                candidates = []
+                for dy in range(3):
+                    for dx in range(3):
+                        cell = self.get_cell(x + dx, y + dy)
+                        if dx < 2 and not cell.walls["E"]:
+                            candidates.append(("E", x + dx, y + dy))
+                        if dy < 2 and not cell.walls["S"]:
+                            candidates.append(("S", x + dx, y + dy))
+                if not candidates:
+                    continue
+                direction, cx, cy = random.choice(candidates)
+                cell = self.get_cell(cx, cy)
+                if direction == "E":
+                    cell.walls["E"] = True
+                    self.get_cell(cx + 1, cy).walls["W"] = True
+                elif direction == "S":
+                    cell.walls["S"] = True
+                    self.get_cell(cx, cy + 1).walls["N"] = True
