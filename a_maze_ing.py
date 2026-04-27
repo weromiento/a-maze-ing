@@ -1,4 +1,4 @@
-from mazegen import parse_file, Maze
+from mazegen import parse_file, Maze, EntryExitInPatternError
 import sys
 import random
 
@@ -52,7 +52,12 @@ def main() -> None:
     config = parse_file(sys.argv[1])
     perfect = config.PERFECT
     maze = Maze(config.WIDTH, config.HEIGHT, config.ENTRY, config.EXIT)
-    pattern_ok = maze.generate_maze(perfect, config.OUTPUT_FILE)
+    pattern_ok = True
+    try:
+        pattern_ok = maze.generate_maze(perfect, config.OUTPUT_FILE)
+    except EntryExitInPatternError as e:
+        print(e)
+        return
     path = True
     while True:
         clear()

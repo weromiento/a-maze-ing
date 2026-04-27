@@ -3,6 +3,14 @@ import random
 import os
 
 
+class MazeTooSmallError(Exception):
+    pass
+
+
+class EntryExitInPatternError(Exception):
+    pass
+
+
 class Cell:
     """Represents a single cell in the maze grid.
 
@@ -101,8 +109,10 @@ class Maze:
         pattern_ok = True
         try:
             self.generate_42()
-        except ValueError:
+        except MazeTooSmallError:
             pattern_ok = False
+        except EntryExitInPatternError as e:
+            raise EntryExitInPatternError(e)
         start_cell = self.get_cell(self.entry[0], self.entry[1])
         stack = [start_cell]
         start_cell.visited = True
@@ -153,7 +163,9 @@ class Maze:
     def generate_42(self) -> None:
         """Generate the 42 pattern in the maze"""
         if self.height < 6 or self.width < 9:
-            raise ValueError("The maze is to small to generate the pattern 42")
+            raise MazeTooSmallError(
+                "The maze is to small to generate the pattern 42"
+            )
         start_x = self.width // 2 - 3
         start_y = self.height // 2 - 2
         draw = [
@@ -169,7 +181,9 @@ class Maze:
                     continue
                 c = self.get_cell(start_x + x, start_y + y)
                 if self.entry == (c.x, c.y) or self.exit == (c.x, c.y):
-                    raise ValueError("Entry or Exit is in the 42 pattern")
+                    raise EntryExitInPatternError(
+                        "Entry or Exit is in the 42 pattern"
+                    )
                 c.walls["N"] = True
                 c.walls["E"] = True
                 c.walls["S"] = True
