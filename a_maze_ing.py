@@ -4,7 +4,7 @@ import random
 
 
 def random_colors() -> dict[str, str]:
-    """Generate a dict of 6 different ANSI colors for the display"""
+    """Returns a dict of 6 different ANSI colors for the display"""
     all_colors = [
         "\033[30m",
         "\033[31m",
@@ -30,8 +30,8 @@ def random_colors() -> dict[str, str]:
 def clear() -> None:
     """
     clear the terminal with uses ANSI espace sequences:
-    \\33[H moves the cursor to the home position (top left)
-    \\33[J clears akk content from the cursor to the end of the screen
+    \\033[H moves the cursor to the home position (top left)
+    \\033[J clears all content from the cursor to the end of the screen
     """
     print("\033[H\033[J", end="")
 
@@ -62,12 +62,12 @@ def main() -> None:
     while True:
         clear()
         if not pattern_ok:
-            print("The maze is to small to generate the pattern 42")
+            print("The maze is too small to generate the pattern 42")
         maze.display(path, colors)
         print("=== A-Maze-Ing ===")
         print("1. Re-generate a new maze")
         print("2. Show/Hide path from entry to exit")
-        print("3. Rotat maze colors")
+        print("3. Rotate maze colors")
         if perfect:
             print("4. Switch perfect to False")
         else:

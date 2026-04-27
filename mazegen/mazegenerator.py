@@ -4,10 +4,14 @@ import os
 
 
 class MazeTooSmallError(Exception):
+    """Raised when the maze dimensions are too small."""
+
     pass
 
 
 class EntryExitInPatternError(Exception):
+    """Raised when an entry or exit is placed inside the maze pattern."""
+
     pass
 
 
@@ -162,7 +166,9 @@ class Maze:
         return pattern_ok
 
     def generate_42(self) -> None:
-        """Generate the 42 pattern in the maze"""
+        """Generate the 42 pattern in the maze checking that the maze is not
+        too small and that the entrance or exit is not in the pattern
+        """
         if self.height < 6 or self.width < 9:
             raise MazeTooSmallError(
                 "The maze is to small to generate the pattern 42"
@@ -250,10 +256,10 @@ class Maze:
             print(f"Error: {e}")
 
     def display(self, path: bool, colors: dict[str, str]) -> None:
-        """Display the maze in the terminal unsing ASCII characters.
+        """Display the maze in the terminal using ASCII characters.
 
         Wall are drawn with block characters, and entry/exit are highlighted.
-        Cells belonging to the pattern ot the pattern are displayed with a
+        Cells belonging to the pattern or the pattern are displayed with a
         different colors.
         """
         RESET = "\033[0m"

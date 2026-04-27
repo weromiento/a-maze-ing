@@ -1,5 +1,5 @@
 from .mazegenerator import Maze, MazeTooSmallError, EntryExitInPatternError
-from .parser import parse_file, Config, parse_bool, parse_tuple
+from .parser import parse_file, Config
 
 __all__ = [
     "Maze",
@@ -7,6 +7,4 @@ __all__ = [
     "EntryExitInPatternError",
     "parse_file",
     "Config",
-    "parse_bool",
-    "parse_tuple",
 ]
