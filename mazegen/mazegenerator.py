@@ -89,15 +89,20 @@ class Maze:
 
         return neighbors
 
-    def generate_maze(self, perfect: bool, output_file: str) -> None:
+    def generate_maze(self, perfect: bool, output_file: str) -> bool:
         """Generate a maze using iterative depth-first search (DFS).
 
         Starts from cell with the coordinates of ENTRY and carves passages
         through unvisited neighbors using a stack-based backtracking approach.
         Cells already marked as visited are left untouched.
         If perfect is false I add hole to the maze to create multiple path.
+        Returns a boolean to indicate whether the pattern can be printed.
         """
-        self.generate_42()
+        pattern_ok = True
+        try:
+            self.generate_42()
+        except ValueError:
+            pattern_ok = False
         start_cell = self.get_cell(self.entry[0], self.entry[1])
         stack = [start_cell]
         start_cell.visited = True
@@ -143,6 +148,7 @@ class Maze:
                                 self.remove_wall(cell, neighbor)
         path = self.bfs()
         self.write_maze_file(output_file, path)
+        return pattern_ok
 
     def generate_42(self) -> None:
         """Generate the 42 pattern in the maze"""

@@ -1,5 +1,4 @@
-from mazegenerator import Maze
-from parser import parse_file
+from mazegen import parse_file, Maze
 import sys
 import random
 
@@ -53,10 +52,12 @@ def main() -> None:
     config = parse_file(sys.argv[1])
     perfect = config.PERFECT
     maze = Maze(config.WIDTH, config.HEIGHT, config.ENTRY, config.EXIT)
-    maze.generate_maze(perfect, config.OUTPUT_FILE)
+    pattern_ok = maze.generate_maze(perfect, config.OUTPUT_FILE)
     path = True
     while True:
         clear()
+        if not pattern_ok:
+            print("The maze is to small to generate the pattern 42")
         maze.display(path, colors)
         print("=== A-Maze-Ing ===")
         print("1. Re-generate a new maze")

@@ -30,10 +30,20 @@ class Config(BaseModel):
         if self.WIDTH <= 0 or self.HEIGHT <= 0:
             raise ValueError("WIDTH and HEIGHT must be > 0")
         exit_x, exit_y = self.EXIT
-        if exit_x >= self.WIDTH or exit_y >= self.HEIGHT:
+        if (
+            exit_x >= self.WIDTH
+            or exit_y >= self.HEIGHT
+            or exit_x < 0
+            or exit_y < 0
+        ):
             raise ValueError("EXIT must be inside the maze")
         entry_x, entry_y = self.ENTRY
-        if entry_x >= self.WIDTH or entry_y >= self.HEIGHT:
+        if (
+            entry_x >= self.WIDTH
+            or entry_y >= self.HEIGHT
+            or entry_x < 0
+            or entry_y < 0
+        ):
             raise ValueError("ENTRY must be inside the maze")
         if self.ENTRY == self.EXIT:
             raise ValueError("ENTRY and EXIT must be different")
