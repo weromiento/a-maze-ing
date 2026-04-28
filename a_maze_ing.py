@@ -6,7 +6,6 @@ import random
 def random_colors() -> dict[str, str]:
     """Returns a dict of 6 different ANSI colors for the display"""
     all_colors = [
-        "\033[30m",
         "\033[31m",
         "\033[32m",
         "\033[33m",

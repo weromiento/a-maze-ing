@@ -79,8 +79,8 @@ Example:
 # Maze configuration
 WIDTH=15
 HEIGHT=15
-ENTRY=1,1
-EXIT=0,14
+ENTRY=0,0
+EXIT=14,14
 OUTPUT_FILE=maze.txt
 PERFECT=True
 ```
@@ -104,8 +104,8 @@ D5395513D513D13
 97AAB96C396C56A
 ...
 
-1,1
-0,14
+0,0
+14,14
 WSSEESENESES...
 ```
 
