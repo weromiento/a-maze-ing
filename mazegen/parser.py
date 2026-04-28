@@ -59,13 +59,13 @@ def parse_tuple(value: str) -> tuple[int, int]:
 
 
 def parse_bool(value: str) -> bool:
-    """Converts a string into a boolean value."""
+    """Converts a string into a Boolean value."""
     v = value.strip().lower()
     if v == "true":
         return True
     if v == "false":
         return False
-    raise ValueError(f"Invalid boolean: {value}")
+    raise ValueError(f"Invalid Boolean: {value}")
 
 
 def parse_file(filename: str) -> Config:

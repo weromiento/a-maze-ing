@@ -242,7 +242,7 @@ path_cells = [
 - Do it well but quickly, the blackhole is coming
 
 **How it evolved:**
-I finished the project a little slower than expected because I wasn't able to work on it from Friday to Sunday.
+We finished the project a little slower than expected because we wasn't able to work on it from Friday to Sunday.
 ### What worked well
 
 - The iterative DFS approach avoided any recursion limit issues on large mazes.
@@ -256,7 +256,7 @@ I finished the project a little slower than expected because I wasn't able to wo
 
 ### Tools used
 
-- My incredible **nvim** setup for writing the code
+- The incredible romgutie's **nvim** setup for writing the code
 - **Git / GitHub** for version control and collaboration
 
 ---
@@ -274,5 +274,5 @@ I finished the project a little slower than expected because I wasn't able to wo
 
 ### AI usage
 Ai (Claude, Le Chat) were used for:
--**Explaining concepts**: Explain certain concepts with examples to improve understanding, like as the BFS algorithm
--**Code verification**: Check if I haven't missed any major mistakes.
+- **Explaining concepts**: Explain certain concepts with examples to improve understanding, like as the BFS algorithm
+- **Code verification**: Check if we haven't missed any major mistakes.

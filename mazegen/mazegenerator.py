@@ -18,9 +18,10 @@ class EntryExitInPatternError(Exception):
 class Cell:
     """Represents a single cell in the maze grid.
 
-    Each cell stores its position (x, y) ans the state of its four walls
-    (North, East, South, West), the state of a wall is represents
-    by a boolean (True = active, False inactive) and if is part of the pattern.
+    Each cell stores its position (x, y) and the state of its four walls
+    (North, East, South, West), the state of a wall is represented
+    by a Boolean (True = active, False = inactive) and indicates whether
+    it is part of the pattern.
     """
 
     def __init__(self, x: int, y: int):
@@ -62,7 +63,7 @@ class Maze:
         return 0 <= x < self.width and 0 <= y < self.height
 
     def remove_wall(self, c1: Cell, c2: Cell) -> None:
-        """Removes the Wall between two adjacent cells."""
+        """Removes the wall between two adjacent cells."""
         dx = c2.x - c1.x
         dy = c2.y - c1.y
 
@@ -107,7 +108,7 @@ class Maze:
         Starts from cell with the coordinates of ENTRY and carves passages
         through unvisited neighbors using a stack-based backtracking approach.
         Cells already marked as visited are left untouched.
-        If perfect is false I add hole to the maze to create multiple path.
+        If perfect is false we add hole to the maze to create multiple path.
         Returns a boolean to indicate whether the pattern can be printed.
         """
         pattern_ok = True
@@ -166,12 +167,13 @@ class Maze:
         return pattern_ok
 
     def generate_42(self) -> None:
-        """Generate the 42 pattern in the maze checking that the maze is not
-        too small and that the entrance or exit is not in the pattern
+        """
+        Generate the 42 pattern in the maze checking that the maze is not
+        too small and that the entrance or exit isn't in the pattern.
         """
         if self.height < 6 or self.width < 9:
             raise MazeTooSmallError(
-                "The maze is to small to generate the pattern 42"
+                "The maze is to small to generate the pattern '42'."
             )
         start_x = self.width // 2 - 3
         start_y = self.height // 2 - 2
@@ -189,7 +191,7 @@ class Maze:
                 c = self.get_cell(start_x + x, start_y + y)
                 if self.entry == (c.x, c.y) or self.exit == (c.x, c.y):
                     raise EntryExitInPatternError(
-                        "Entry or Exit is in the 42 pattern"
+                        "Entry or Exit is in the '42' pattern."
                     )
                 c.walls["N"] = True
                 c.walls["E"] = True
@@ -216,7 +218,7 @@ class Maze:
     def cell_to_hex(self, cell: Cell) -> str:
         """
         Generate an hexadecimal value
-        compared with the state of each wall
+        compared with the state of each wall.
         """
         value = 0
         if cell.walls["N"]:

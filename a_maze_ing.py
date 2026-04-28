@@ -41,7 +41,7 @@ def main() -> None:
     Entry point of the program
     Loads configuration, generate a maze with a 42 pattern calculate the
     solution path, then runs an interactive loop allowing regeneration,
-    path toggle, change colors, switch perfect mode and exit
+    path toggle, change colors, switch perfect mode and exit.
     """
     if len(sys.argv) < 2:
         print("Usage: python a_maze_ing.py <config_file>")
@@ -62,7 +62,7 @@ def main() -> None:
     while True:
         clear()
         if not pattern_ok:
-            print("The maze is too small to generate the pattern 42")
+            print("The maze is too small to generate the pattern '42'.")
         maze.display(path, colors)
         print("=== A-Maze-Ing ===")
         print("1. Re-generate a new maze")
@@ -88,7 +88,7 @@ def main() -> None:
         elif key == "5":
             return
         else:
-            print("Key must be between 1 and 5")
+            print("Key must be between 1 and 5.")
 
 
 if __name__ == "__main__":
