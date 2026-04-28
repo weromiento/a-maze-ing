@@ -84,6 +84,8 @@ def main() -> None:
             colors = random_colors()
         elif key == "4":
             perfect = not perfect
+            maze.reset_maze()
+            maze.generate_maze(perfect, config.OUTPUT_FILE)
         elif key == "5":
             return
         else:
