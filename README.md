@@ -64,10 +64,10 @@ The configuration file uses `KEY=VALUE` pairs, one per line. Lines starting with
 
 | Key | Type | Description | Example |
 |-----|------|-------------|---------|
-| `WIDTH` | int | Number of columns | `WIDTH=20` |
+| `WIDTH` | int | Number of columns | `WIDTH=15` |
 | `HEIGHT` | int | Number of rows | `HEIGHT=15` |
 | `ENTRY` | x,y | Entry cell coordinates | `ENTRY=0,0` |
-| `EXIT` | x,y | Exit cell coordinates | `EXIT=19,14` |
+| `EXIT` | x,y | Exit cell coordinates | `EXIT=14,14` |
 | `OUTPUT_FILE` | string | Path of the output file | `OUTPUT_FILE=maze.txt` |
 | `PERFECT` | bool | Perfect maze (True/False) | `PERFECT=True` |
 
