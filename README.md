@@ -242,7 +242,7 @@ path_cells = [
 - Do it well but quickly, the blackhole is coming
 
 **How it evolved:**
-We finished the project a little slower than expected because we wasn't able to work on it from Friday to Sunday.
+-We followed the subject step by step, implementing all mandatory requirements in order.
 ### What worked well
 
 - The iterative DFS approach avoided any recursion limit issues on large mazes.
